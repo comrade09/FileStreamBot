@@ -52,6 +52,10 @@ async def start_services():
     await web.TCPSite(server, Server.BIND_ADDRESS, Server.PORT).start()
     print("------------------------------ DONE ------------------------------")
     print()
+    if Server.KEEP_ALIVE:
+        print("------------------ Starting Keep Alive Service ------------------")
+        print()
+        asyncio.create_task(ping_server())
     print("------------------------- Service Started -------------------------")
     print("                        bot =>> {}".format(bot_info.first_name))
     if bot_info.dc_id:
@@ -59,14 +63,6 @@ async def start_services():
     print(" URL =>> {}".format(Server.URL))
     print("------------------------------------------------------------------")
     await idle()
-    
-async def main_loop():
-    while True:
-        try:
-            await start_services()
-            await asyncio.sleep(300)
-        except Exception as err:
-            logging.error(traceback.format_exc())
 
 async def cleanup():
     await server.cleanup()
@@ -74,8 +70,14 @@ async def cleanup():
 
 if __name__ == "__main__":
     try:
-        asyncio.run(main_loop())
+        loop.run_until_complete(start_services())
     except KeyboardInterrupt:
+        pass
+    except Exception as err:
+        logging.error(traceback.format_exc())
+    finally:
+        loop.run_until_complete(cleanup())
+        loop.stop()
         print("------------------------ Stopped Services ------------------------")
 
 
