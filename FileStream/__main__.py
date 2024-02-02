@@ -58,7 +58,7 @@ async def start_services():
         print("                        DC ID =>> {}".format(str(bot_info.dc_id)))
     print(" URL =>> {}".format(Server.URL))
     print("------------------------------------------------------------------")
-    await idle()
+    
 
 async def cleanup():
     await server.cleanup()
