@@ -59,6 +59,7 @@ async def start_services():
     print(" URL =>> {}".format(Server.URL))
     print("------------------------------------------------------------------")
     await idle()
+    
 async def main_loop():
     while True:
         try:
