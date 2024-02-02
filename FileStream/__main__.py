@@ -63,11 +63,10 @@ async def start_services():
 async def main_loop():
     while True:
         try:
-            # Your existing bot initialization and setup code here
             await start_services()
-
-            # Introduce a delay to avoid high resource usage in case of low traffic
-            await asyncio.sleep(300)    
+            await asyncio.sleep(300)
+        except Exception as err:
+            logging.error(traceback.format_exc())
 
 async def cleanup():
     await server.cleanup()
@@ -75,12 +74,11 @@ async def cleanup():
 
 if __name__ == "__main__":
     try:
-        loop.run_until_complete(start_services())
+        asyncio.run(main_loop())
     except KeyboardInterrupt:
-        pass
-    except Exception as err:
-        logging.error(traceback.format_exc())
-    finally:
-        loop.run_until_complete(cleanup())
-        loop.stop()
         print("------------------------ Stopped Services ------------------------")
+
+
+
+
+
