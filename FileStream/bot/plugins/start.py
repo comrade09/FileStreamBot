@@ -14,7 +14,7 @@ import asyncio
 
 db = Database(Telegram.DATABASE_URL, Telegram.SESSION_NAME)
 
-@FileStream.on_message(filters.command('start') & filters.private)
+@FileStream.on_message(filters.command('start'))
 async def start(bot: Client, message: Message):
     if not await verify_user(bot, message):
         return
